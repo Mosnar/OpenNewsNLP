@@ -1,0 +1,14 @@
+MPQASENT[autoclass1="obj"] MPQASENT[autoclass2="obj"] {
+    color: #55BA34 !important;
+}
+MPQASENT[autoclass1="subj"] MPQASENT[autoclass2="subj"] {
+    color: #D11F1F !important;
+}
+
+MPQASENT[autoclass1="obj"],MPQASENT[autoclass2="obj"] {
+    color: #8FAB85;
+}
+
+MPQASENT[autoclass1="subj"],MPQASENT[autoclass2="subj"] {
+    color: #D97C3B;
+}
