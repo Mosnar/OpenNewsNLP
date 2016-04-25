@@ -1,4 +1,5 @@
 import sys, os, shutil
+import fileinput
 from subprocess import call
 
 lib_dir = 'lib'
@@ -7,13 +8,6 @@ temp_dir = 'temp'
 
 command = 'java -Xmx1g -classpath ./lib/weka.jar:./lib/stanford-postagger.jar:opinionfinder.jar ' \
           'opin.main.RunOpinionFinder %s >/dev/null 2>&1'
-
-header = '''<!DOCTYPE html>
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="../markup.css">
-</head>
-'''
 
 def cleanup(path):
     shutil.rmtree(path)
@@ -24,30 +18,25 @@ def view(filepath):
     call(open_cmd, shell=True)
 
 
-def postprocess(outname, filepath):
-    global output_dir, header
+def postprocess(filepath):
+    global output_dir
 
     if not os.path.exists(filepath):
         print 'err: no markup file found at %s' % filepath
 
-    outpath = os.path.join(output_dir, outname + '.html')
-    newfile = open(outpath, 'w')
+    # outpath = os.path.join(output_dir, outname + '.html')
+    # newfile = open(outpath, 'w')
     oldfile = open(filepath, 'r')
-    newfile.write(header)
-    newfile.writelines([l for l in oldfile.readlines()])
-    print 'Done!'
-
-    view(outpath)
-
+    for l in oldfile.readlines():
+        print l
 
 def find_opinions(filepath, clean=True):
-    print 'Running...'
     global lib_dir, command
     abspath = os.path.abspath(filepath)
 
     if not os.path.exists(abspath):
         print 'invalid file'
-        return
+        return -1
 
     command %= abspath
 
@@ -59,9 +48,7 @@ def find_opinions(filepath, clean=True):
     genpath = '%s_auto_anns' % abspath
     newpath = '%s/markup.txt' % genpath
 
-    newname = os.path.splitext(os.path.basename(filepath))[0]
-
-    postprocess(newname, newpath)
+    postprocess(newpath)
 
 def temp_copy(filepath):
     abspath = os.path.abspath(filepath)
@@ -82,6 +69,10 @@ def temp_copy(filepath):
 
 if len(sys.argv) >= 2:
     clean = '--noclean' not in sys.argv
+
+    input = ""
+    for line in fileinput.input():
+        input += line
 
     (newpath, tempdir) = temp_copy(sys.argv[1])
 

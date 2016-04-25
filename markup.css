@@ -1,14 +1,21 @@
 MPQASENT[autoclass1="obj"] MPQASENT[autoclass2="obj"] {
-    color: #55BA34 !important;
+    color: #000000 !important;
 }
 MPQASENT[autoclass1="subj"] MPQASENT[autoclass2="subj"] {
-    color: #D11F1F !important;
+    color: firebrick !important;
 }
 
 MPQASENT[autoclass1="obj"],MPQASENT[autoclass2="obj"] {
-    color: #8FAB85;
+    color: #000;
 }
 
 MPQASENT[autoclass1="subj"],MPQASENT[autoclass2="subj"] {
-    color: #D97C3B;
+    color: #cc0000;
+}
+
+body {
+    color: #00000;
+    background-color: #F6F6F6;
+    font-family: "Helvetica Neue", sans-serif;
+    margin: 50px;
 }
