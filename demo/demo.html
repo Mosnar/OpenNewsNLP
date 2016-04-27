@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="markup.css">
+<script type="text/javascript" src="fox_js_demo.js"></script>
+<script src="jquery-2.2.0.min.js"></script>
+
+
+</head>
+
+<h2> This is part of a passage from A Major News Station </h2>
+<br>
+<br><br>
+<br><br>
+
+<p> Passages will appear larger and in blue. Enter whether or not you think they are biased. The algorithm will then print the passage in red text if it thinks its biased, and black text if it finds the text objective </p>
+<br><br>
+<hr>
+
+<MPQASENT autoclass1="unknown" autoclass2="subj">Russia's ambassador to NATO accused the U.S. Wednesday of trying to intimidate Moscow by sailing a Navy destroyer in the Baltic Sea, and vowed Russia would respond to future incidents with "all necessary measures."</MPQASENT>
+ 
+<MPQASENT autoclass1="unknown" autoclass2="obj">Alexander Grushko spoke following a meeting of the NATO-Russia council in Brussels, the first in nearly two years.</MPQASENT> <MPQASENT autoclass1="unknown" autoclass2="obj" id="3">The meeting, which involved Grushko and ambassadors from NATO's 28 member states, ran over its allotted time by about 90 minutes, but produced no major breakthroughs.</MPQASENT>
+
+<MPQASENT autoclass1="unknown" autoclass2="obj">"It's better to talk than not to talk," Grushko told reporters, before adding that relationships between NATO and Russia would not improve "without real steps on NATO's side to downgrade military activity in the area adjacent to the Russian Federation."</MPQASENT>
+
+<MPQASENT autoclass1="unknown" autoclass2="obj">Reuters reported that U.S. ambassador to NATO Douglas Lute pressed Grushko about the April 11 incident in which two Russian Su-24 attack aircraft buzzed the USS Donald Cook in the Baltic Sea.</MPQASENT>
+
+
+<script>
+
+		// This determines if a text is objective
+		function isObjective(statement) {
+			var objective_statements = $("[autoclass2=obj]");
+			var subjective_statements = $("[autoclass2=subj]");
+
+			$(objective_statements).each(function( index ) {
+				alert($(this).text() + "|||||||||" + statement.text());
+				// always returns false...
+				if(statement.text() == $( this ).text()) {
+					return true;
+				}
+			});	
+			return false;
+			//var subjective_statements = $("[autoclass2=subj]").text(); 
+		} 
+
+		// gather all the items
+		var all = $("MPQASENT");
+
+		// intially hide all sentences
+		$(all).each(function( index ) {
+			$( this ).hide();
+		});
+		
+		// function for user prompt
+		function promptUser() {
+			var thinksBiased = prompt("Do you think the large blue phrase is biased? Enter y for yes and n for no", "");
+			// They think it's biased
+			if(thinksBiased.indexOf("y") != -1) {
+				var biasedBool = true;
+			}
+			else {
+				var biasedBool = false;
+			}
+			return biasedBool;
+		}
+		
+		// Iterate through each sentence
+		$(all).each(function( index ) {
+			$( this ).show();
+			$( this ).css({ 'color': 'blue' });
+			
+			// Doesn't get autoclass stuff
+			var obj = $(this).css('autoclass2');
+			
+			// Call function to ask for userprompt
+			var biasedBool = promptUser();
+			// give appropritate response
+			if(isObjective($(this))) {
+				if(!biasedBool) {
+					var prompt = "You and the algorithm agree, ";
+				}
+				else {
+					var prompt = "You and the algorithm disagree, ";
+
+				}
+				alert(prompt + "it labels this is as objective!");
+				$( this ).css({ 'color': 'black' });
+			}
+			else {
+				if(biasedBool) {
+					var prompt = "You and the algorithm agree, ";
+				}
+				else {
+					var prompt = "You and the algorithm disagree, ";
+
+				}	
+				alert(prompt + " it labels this as biased!");
+
+				$( this ).css({ 'color': 'red' });
+
+
+			}
+		});
+	
+</script>
